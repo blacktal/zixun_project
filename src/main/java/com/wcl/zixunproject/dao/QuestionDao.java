@@ -22,4 +22,5 @@ public interface QuestionDao {
 
     @Select({"select id,title,content,created_date,comment_num,user_id from question where id = #{questionId}"})
     Question getQuestionById(int questionId);
+    
 }

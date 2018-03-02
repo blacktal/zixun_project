@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import com.wcl.zixunproject.dao.QuestionDao;
 import com.wcl.zixunproject.pojo.Question;
@@ -25,4 +26,11 @@ public class QuestionService {
         return questionDao.getQuestionById(questionId);
     }
     
+    public int addQuestion(Question question) {
+        // html标签过滤
+        question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
+        question.setContent(HtmlUtils.htmlEscape(question.getContent()));        
+        // 敏感词过滤，略
+        return questionDao.addQuestion(question);
+    }
 }
