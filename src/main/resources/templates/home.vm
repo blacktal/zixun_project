@@ -1,0 +1,7 @@
+hello
+
+
+#foreach($vo in $vos)
+    用户：$!{vo.user.name}
+#end
+
