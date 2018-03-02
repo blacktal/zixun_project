@@ -19,4 +19,7 @@ public interface QuestionDao {
     List<Question> getLatestQuestions(@Param("userId") int userId,
                                @Param("offset") int offset,
                                @Param("limit") int limit);
+
+    @Select({"select id,title,content,created_date,comment_num,user_id from question where id = #{questionId}"})
+    Question getQuestionById(int questionId);
 }
