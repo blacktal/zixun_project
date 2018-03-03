@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.wcl.zixunproject.dao.LoginTicketDao;
@@ -122,5 +121,9 @@ public class UserService {
         // 登出，将数据库中的ticket状态改为不可用即可
         userDao.updateTicketStatus(ticket, 1);
         
+    }
+
+    public User getUserByName(String toName) {
+        return userDao.getUserByName(toName);
     }
 }
