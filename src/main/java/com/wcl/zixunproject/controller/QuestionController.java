@@ -1,6 +1,8 @@
 package com.wcl.zixunproject.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wcl.zixunproject.pojo.Comment;
 import com.wcl.zixunproject.pojo.Question;
+import com.wcl.zixunproject.service.CommentService;
 import com.wcl.zixunproject.service.QuestionService;
+import com.wcl.zixunproject.service.UserService;
+import com.wcl.zixunproject.util.EntityType;
 import com.wcl.zixunproject.util.HostHolder;
+import com.wcl.zixunproject.util.ViewObject;
 import com.wcl.zixunproject.util.ZixunProjectUtil;
 
 @Controller
@@ -27,13 +34,30 @@ public class QuestionController {
     QuestionService questionService;
     
     @Autowired
+    CommentService commentService;
+    
+    @Autowired
+    UserService userService;
+    
+    @Autowired
     HostHolder hostHolder;
     
     @RequestMapping(path = {"/question/{questionId}"}, method = RequestMethod.GET)
     public String questionDetail(Model model,
                                  @PathVariable("questionId") int questionId) {
         Question question = questionService.getQuestionById(questionId);
+        List<Comment> commentList = commentService.getCommentByEntity(EntityType.QUESTION.getValue(), questionId);
+        // 只获取comment列表还不够，每条comment的发表人名字，头像，url都要显示到
+        List<ViewObject> vos = new ArrayList<>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            // 严格来说还应该验证一下user是否存在，不存在则匿名显示该评论
+            vo.set("user", userService.getUserById(comment.getUserId()));
+            vos.add(vo);
+        }
         model.addAttribute("question", question);
+        model.addAttribute("comments", vos);
         return "detail";
     }
     

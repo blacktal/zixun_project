@@ -14,6 +14,8 @@ import java.util.Map;
 public class ZixunProjectUtil {
     private static final Logger logger = LoggerFactory.getLogger(ZixunProjectUtil.class);
 
+    public static int anonymousUserId = 3;
+    
     public static String getJSONString(int code) {
         JSONObject json = new JSONObject();
         json.put("code", code);

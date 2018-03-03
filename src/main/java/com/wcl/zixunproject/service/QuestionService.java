@@ -33,4 +33,8 @@ public class QuestionService {
         // 敏感词过滤，略
         return questionDao.addQuestion(question);
     }
+    
+    public int updateQuestionCommentNum(int questionId, int commentNum) {
+        return questionDao.updateQuestionCommentNum(questionId, commentNum);
+    }
 }
